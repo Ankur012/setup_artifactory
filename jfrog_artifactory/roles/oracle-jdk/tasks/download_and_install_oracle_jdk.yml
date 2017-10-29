@@ -1,0 +1,33 @@
+---
+- name: Download Java
+  command: "wget  -q -O {{oracle_java_archive}} --no-cookies --no-check-certificate --header 'Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie' {{oracle_jdk_url}}"
+
+- name: unarchive jdk  
+  unarchive: src={{oracle_java_archive}}  dest={{download_folder}} remote_src=yes
+
+- name: Fix ownership
+  file: state=directory path={{oracle_java_name}} owner=root group=root recurse=yes
+
+- name: Make Java available for system
+  shell: 'alternatives --install "/usr/bin/java" "java" "{{oracle_java_name}}/bin/java" 2000'
+
+- name: Make Jar available for system
+  shell: 'alternatives --install "/usr/bin/jar" "jar" "{{oracle_java_name}}/bin/jar" 2'
+
+- name: Make Javac available for system
+  shell: 'alternatives --install "/usr/bin/javac" "javac" "{{oracle_java_name}}/bin/javac" 2'
+
+- name: Set Jar available for system
+  shell: 'alternatives --set  "jar" "{{oracle_java_name}}/bin/jar" '
+
+- name: Set Javac available for system
+  shell: 'alternatives --set  "javac" "{{oracle_java_name}}/bin/javac" '
+
+- name:  Adding java in enviroment
+  lineinfile: path=/etc/environment  line='export JAVA_HOME={{download_folder}}/{{oracle_java_name}}'
+
+- name: Adding JRE in enviroment
+  lineinfile: path=/etc/environment  line='export JRE_HOME={{download_folder}}/{{oracle_java_name}}/jre'
+
+- name: Clean up
+  file: state=absent path={{oracle_java_archive}}

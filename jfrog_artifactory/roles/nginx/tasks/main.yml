@@ -1,0 +1,12 @@
+---
+- name: install nginx web server
+  yum: name=nginx state=latest
+
+- name: copy nginx template to server
+  template: src=templates/nginx.j2  dest=/etc/nginx/nginx.conf
+
+- name: re start nginx servicwe
+  service: name=nginx state=restarted
+
+
+

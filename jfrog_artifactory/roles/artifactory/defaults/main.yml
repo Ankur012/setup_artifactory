@@ -1,0 +1,8 @@
+---
+artifactory_version: 5.5.1
+mysql_connector_version: 5.1.40
+download_path: "/tmp"
+artifactory_download_path: '{{ download_path }}/jfrog-artifactory-oss-{{artifactory_version}}.rpm'
+artifactory_db_password: myrooT@99#
+
+

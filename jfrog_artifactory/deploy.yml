@@ -1,0 +1,17 @@
+---
+- hosts: centos
+  become: yes
+  pre_tasks:
+    - name: Installing required tools
+      yum: name="{{item}}" state=present
+      with_items:
+         - tar
+         - unzip
+         - rsync
+         - wget
+         - net-tools
+  roles:
+    - epel
+    - oracle-jdk
+    - artifactory
+    - nginx

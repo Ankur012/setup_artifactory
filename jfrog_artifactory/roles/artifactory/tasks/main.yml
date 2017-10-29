@@ -1,0 +1,29 @@
+---
+- name: download artifactory {{ artifactory_version }}
+  get_url: url=https://bintray.com/jfrog/artifactory-rpms/download_file?file_path=jfrog-artifactory-oss-{{artifactory_version}}.rpm  dest={{artifactory_download_path}}
+
+- name: install rsync 
+  yum: name=rsync state=latest
+
+- name: install artifactory 
+  shell:  rpm -ivh {{ artifactory_download_path }}
+
+- name: copy mysql.properties file 
+  template: src=templates/mysql.properties.j2 dest=/opt/jfrog/artifactory/misc/db/mysql.properties
+
+- name: copy storage.properties file
+  template: src=templates/mysql.properties.j2  dest=/etc/opt/jfrog/artifactory/storage.properties
+
+- name: download mysql jdbc connector 
+  get_url: url=http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-{{mysql_connector_version}}.zip dest={{download_path}}/mysql-connector-java-{{mysql_connector_version}}.zip 
+
+- name: unarchive jdbc connector
+  unarchive: src={{download_path}}/mysql-connector-java-{{mysql_connector_version}}.zip dest={{download_path}} remote_src=yes
+
+- name: copying jdbc connector to in tomcat lib 
+  copy: src={{download_path}}/mysql-connector-java-{{mysql_connector_version}}/mysql-connector-java-{{mysql_connector_version}}-bin.jar dest=/opt/jfrog/artifactory/tomcat/lib/ remote_src=yes
+
+- name: restart artifactory service
+  shell: service artifactory restart
+  ignore_errors: yes
+

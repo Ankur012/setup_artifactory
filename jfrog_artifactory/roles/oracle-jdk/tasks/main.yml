@@ -1,0 +1,3 @@
+---
+- name: Download and install Oracle JDK
+  include: download_and_install_oracle_jdk.yml

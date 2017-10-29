@@ -1,0 +1,7 @@
+---
+oracle_jdk_version: 8
+oracle_jdk_sub_version: 151
+oracle_jdk_url: http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jdk-8u151-linux-x64.tar.gz
+download_folder: /opt
+oracle_java_name: "{{download_folder}}/jdk1.{{oracle_jdk_version}}.0_{{oracle_jdk_sub_version}}"
+oracle_java_archive: "{{download_folder}}/jdk-{{oracle_jdk_version }}u{{oracle_jdk_sub_version}}.linux-x64.tar.gz"
